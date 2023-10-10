@@ -2,11 +2,7 @@ const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, g
 const fs = require("fs");
 const util = require("util");
 const chalk = require("chalk");
-let { Configuration, OpenAIApi } = require("openai");
-const configuration = new Configuration({
-	apiKey: "pk-**********************************************",
-	basePath: "https://api.pawan.krd/v1",
-});
+const { Configuration, OpenAIApi } = require("openai");
 let setting = require("./key.json");
 
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
@@ -95,7 +91,8 @@ Menampilkan source code bot yang dipakai`)
             if (setting.keyopenai === "ISI_APIKEY_OPENAI_DISINI") return reply("Apikey belum diisi\n\nSilahkan isi terlebih dahulu apikeynya di file key.json\n\nApikeynya bisa dibuat di website: https://beta.openai.com/account/api-keys");
             if (!text) return reply(`Chat dengan AI.\n\nContoh:\n${prefix}${command} Apa itu resesi`);
             const configuration = new Configuration({
-              apiKey: setting.keyopenai,
+              apiKey: "pk-**********************************************",
+              basePath: "https://api.pawan.krd/v1/chat/completions",
             });
             const openai = new OpenAIApi(configuration);
             const response = await openai.createChatCompletion({
@@ -120,9 +117,10 @@ Menampilkan source code bot yang dipakai`)
             if (setting.keyopenai === "ISI_APIKEY_OPENAI_DISINI") return reply("Apikey belum diisi\n\nSilahkan isi terlebih dahulu apikeynya di file key.json\n\nApikeynya bisa dibuat di website: https://beta.openai.com/account/api-keys");
             if (!text) return reply(`Membuat gambar dari AI.\n\nContoh:\n${prefix}${command} Wooden house on snow mountain`);
             const configuration = new Configuration({
-              apiKey: setting.keyopenai,
+              apiKey: "pk-**********************************************",
+              basePath: "https://api.pawan.krd/v1/images/generations",
             });
-            const openai = new OpenAIApi(configuration);
+            const openai = new OpenAIApi(Configuration);
             const response = await openai.createImage({
               prompt: text,
               n: 1,
@@ -130,16 +128,16 @@ Menampilkan source code bot yang dipakai`)
             });
             //console.log(response.data.data[0].url) // see the response
             client.sendImage(from, response.data.data[0].url, text, mek);
-            } catch (error) {
-          if (error.response) {
-            console.log(error.response.status);
-            console.log(error.response.data);
-            console.log(`${error.response.status}\n\n${error.response.data}`);
-          } else {
-            console.log(error);
-            m.reply("Maaf, sepertinya ada yang error :"+ error.message);
+          } catch (error) {
+            if (error.response) {
+              console.log(error.response.status);
+              console.log(error.response.data);
+              console.log(`${error.response.status}\n\n${error.response.data}`);
+            } else {
+              console.log(error);
+              m.reply("Maaf, sepertinya ada yang error :"+ error.message);
+            }
           }
-        }
           break;
           case "sc": case "script": case "scbot":
            m.reply("Bot ini menggunakan script dari https://github.com/Sansekai/Wa-OpenAI");
