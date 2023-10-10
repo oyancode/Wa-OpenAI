@@ -2,7 +2,11 @@ const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, g
 const fs = require("fs");
 const util = require("util");
 const chalk = require("chalk");
-const { Configuration, OpenAIApi } = require("openai");
+let { Configuration, OpenAIApi } = require("openai");
+const configuration = new Configuration({
+	apiKey: "pk-**********************************************",
+	basePath: "https://api.pawan.krd/v1",
+});
 let setting = require("./key.json");
 
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
